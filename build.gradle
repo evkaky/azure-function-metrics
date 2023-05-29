@@ -1,7 +1,6 @@
 plugins {
     id "java"
-    id "com.microsoft.azure.azurefunctions" version "1.12.1"
-    id "org.springframework.boot" version "3.0.6"
+    id "com.microsoft.azure.azurefunctions" version "1.13.1"
 }
 
 group "com.example"
@@ -12,20 +11,14 @@ repositories {
 }
 
 dependencies {
-    implementation(platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES))
-    implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2022.0.1"))
-    implementation(platform("com.azure.spring:spring-cloud-azure-dependencies:5.0.0"))
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:3.1.5"))
 
     // azure
-    implementation "org.springframework.cloud:spring-cloud-function-adapter-azure"
+    implementation "org.springframework.cloud:spring-cloud-function-adapter-azure:4.0.5"
 
     // observability
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "io.micrometer:micrometer-tracing-bridge-otel"
-
-    // spring itself
-    implementation "org.springframework.boot:spring-boot-starter-webflux"
-    implementation "org.springframework.boot:spring-boot-starter-json"
 }
 
 java {
@@ -33,15 +26,10 @@ java {
 }
 
 azurefunctions {
-    // subscription = '<your subscription id>'
     resourceGroup = 'group1'
-    appName = 'evkaky11func1' // please rename the function name
-//    pricingTier = 'Consumption'
-//    region = 'westus'
-//    runtime {
-//      os = 'windows'
-//    }
-    // appSettings {
-    //    key = 'value'
-    // }
+    appName = 'func1'
+    appSettings {
+        APPLICATIONINSIGHTS_ENABLE_AGENT = true
+        MAIN_CLASS = 'org.example.functions.MyMain'
+    }
 }
